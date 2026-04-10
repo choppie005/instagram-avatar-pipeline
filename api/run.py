@@ -7,9 +7,8 @@ import json
 import logging
 import os
 import sys
-import time
 from datetime import datetime
-from pathlib import Path
+from http.server import BaseHTTPRequestHandler
 
 # Add project root to path
 sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -44,7 +43,6 @@ def run_for_persona(persona):
     log.info(f"Processing: {persona_id} | Topic: {topic}")
 
     try:
-        # Step 1: Generate script
         result = generate_script(persona, topic)
         script_text = result["script"]
         caption = result["caption"]
@@ -52,7 +50,6 @@ def run_for_persona(persona):
         full_caption = f"{caption}\n\n{hashtags}"
         log.info(f"  Script generated ({len(script_text.split())} words)")
 
-        # Step 2: Generate avatar video (HeyGen handles TTS + avatar)
         video_path = f"/tmp/{datetime.now().strftime('%Y-%m-%d')}_{persona_id}.mp4"
         video_url = generate_video(
             persona["heygen_avatar_id"],
@@ -62,14 +59,11 @@ def run_for_persona(persona):
         )
         log.info(f"  Video generated")
 
-        # Step 3: Post to Instagram
         from src.instagram_poster import post_reel
         post_id = post_reel(video_url, full_caption)
         log.info(f"  Posted! Instagram ID: {post_id}")
 
-        # Step 4: Log
         add_entry(persona_id, topic, script_text, video_path, post_id, "posted")
-
         return {"persona": persona_id, "topic": topic, "status": "posted", "post_id": post_id}
 
     except Exception as e:
@@ -79,32 +73,31 @@ def run_for_persona(persona):
         return {"persona": persona_id, "topic": topic, "status": "failed", "error": str(e)}
 
 
-def handler(request):
-    """Vercel serverless function handler."""
-    from http.server import BaseHTTPRequestHandler
+class handler(BaseHTTPRequestHandler):
+    def do_GET(self):
+        cron_secret = os.getenv("CRON_SECRET")
+        auth_header = self.headers.get("Authorization", "")
+        if cron_secret and auth_header != f"Bearer {cron_secret}":
+            self.send_response(401)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"error": "Unauthorized"}).encode())
+            return
 
-    # Verify cron secret if set (security for cron endpoint)
-    cron_secret = os.getenv("CRON_SECRET")
-    auth_header = request.headers.get("Authorization", "")
-    if cron_secret and auth_header != f"Bearer {cron_secret}":
-        return {
-            "statusCode": 401,
-            "body": json.dumps({"error": "Unauthorized"}),
-        }
+        personas = get_todays_personas()
+        if not personas:
+            self.send_response(200)
+            self.send_header("Content-Type", "application/json")
+            self.end_headers()
+            self.wfile.write(json.dumps({"message": "No personas scheduled today", "results": []}).encode())
+            return
 
-    personas = get_todays_personas()
-    if not personas:
-        return {
-            "statusCode": 200,
-            "body": json.dumps({"message": "No personas scheduled today", "results": []}),
-        }
+        results = []
+        for persona in personas:
+            result = run_for_persona(persona)
+            results.append(result)
 
-    results = []
-    for persona in personas:
-        result = run_for_persona(persona)
-        results.append(result)
-
-    return {
-        "statusCode": 200,
-        "body": json.dumps({"message": "Pipeline completed", "results": results}),
-    }
+        self.send_response(200)
+        self.send_header("Content-Type", "application/json")
+        self.end_headers()
+        self.wfile.write(json.dumps({"message": "Pipeline completed", "results": results}).encode())
