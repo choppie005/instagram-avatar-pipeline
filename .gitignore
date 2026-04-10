@@ -1,0 +1,14 @@
+config/.env
+data/videos/*.mp4
+data/videos/*.mp3
+data/faces/
+data/pipeline.log
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+.vercel/
+node_modules/
+
+.DS_Store

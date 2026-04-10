@@ -1,0 +1,88 @@
+{
+  "personas": [
+    {
+      "id": "wealth_mentor",
+      "name": "Arjun Kapoor",
+      "niche": "investing & wealth building",
+      "tone": "calm, authoritative, uses real-world Indian market examples",
+      "heygen_avatar_id": "Brandon_Business_Standing_Front_public",
+      "heygen_voice_id": "d17d3ea975bf443aa1f68d1bd3bb5f17",
+      "topics": [
+        "index funds",
+        "SIPs",
+        "real estate investing",
+        "tax saving under 80C",
+        "mutual funds vs FDs",
+        "power of compounding",
+        "emergency fund",
+        "gold vs equity"
+      ],
+      "hashtags": ["#investing", "#wealthbuilding", "#money", "#personalfinance", "#mutualfunds"],
+      "posting_days": ["monday", "wednesday", "friday"],
+      "posting_time": "09:00"
+    },
+    {
+      "id": "side_hustle_coach",
+      "name": "Priya Sharma",
+      "niche": "freelancing & online business",
+      "tone": "energetic, motivational, practical with actionable steps",
+      "heygen_avatar_id": "Annie_Business_Casual_Standing_Front_public",
+      "heygen_voice_id": "6dffedab3a534ef292aaa51e7e8791c7",
+      "topics": [
+        "freelancing on Upwork",
+        "passive income ideas",
+        "dropshipping basics",
+        "digital products",
+        "YouTube automation",
+        "affiliate marketing",
+        "selling on Etsy",
+        "online tutoring"
+      ],
+      "hashtags": ["#sidehustle", "#passiveincome", "#freelancing", "#onlinebusiness", "#makemoney"],
+      "posting_days": ["tuesday", "thursday", "saturday"],
+      "posting_time": "09:00"
+    },
+    {
+      "id": "budget_boss",
+      "name": "Neha Verma",
+      "niche": "budgeting & saving",
+      "tone": "friendly, relatable, uses everyday examples and analogies",
+      "heygen_avatar_id": "Caroline_Business_Standing_Front_public",
+      "heygen_voice_id": "b7ccfdb356af4985b478ca94665a9ee0",
+      "topics": [
+        "50/30/20 budgeting rule",
+        "expense tracking apps",
+        "saving hacks for beginners",
+        "debt payoff strategies",
+        "no-spend challenge",
+        "automating your savings",
+        "cutting subscriptions",
+        "grocery budgeting tips"
+      ],
+      "hashtags": ["#budgeting", "#savingmoney", "#personalfinance", "#frugal", "#moneytips"],
+      "posting_days": ["monday", "thursday"],
+      "posting_time": "09:00"
+    },
+    {
+      "id": "crypto_analyst",
+      "name": "Rohan Mehta",
+      "niche": "crypto & DeFi",
+      "tone": "sharp, data-driven, explains complex concepts simply",
+      "heygen_avatar_id": "Brandon_Office_Standing_Front_public",
+      "heygen_voice_id": "d52e60fb493f4cb8a4acfff249c93556",
+      "topics": [
+        "Bitcoin basics",
+        "Ethereum and smart contracts",
+        "DeFi protocols explained",
+        "crypto market trends",
+        "staking rewards",
+        "NFTs in 2026",
+        "crypto tax in India",
+        "Web3 wallets"
+      ],
+      "hashtags": ["#crypto", "#bitcoin", "#defi", "#web3", "#cryptocurrency"],
+      "posting_days": ["wednesday", "saturday"],
+      "posting_time": "09:00"
+    }
+  ]
+}
